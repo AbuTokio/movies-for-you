@@ -215,5 +215,6 @@ export enum MOVIE {
 export enum SORT {
   BY_YEAR_UP,
   BY_YEAR_DOWN,
-  BY_RATING,
+  BY_RATING_UP,
+  BY_RATING_DOWN,
 }

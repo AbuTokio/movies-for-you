@@ -6,24 +6,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Movies for you</title>
   </head>
-  <body>
+  <body class="darkmode">
     <header>
-      <h1>Movies for <span>You</span></h1>
+      <div class="theme-switch-wrapper">
+        <input type="checkbox" class="theme-switch" />
+      </div>
+      <h1><span>Movies</span> for You</h1>
       <p>The best MovieDB</p>
     </header>
     <main>
       <section class="searchbar-section">
-        <article class="searchfield-article">
-          <input type="text" id="search-input" placeholder="Search..." />
-          <button id="search-btn" type="button">Search</button>
-        </article>
-        <article class="order-article">
-          <button id="year-up-btn" type="button">Year up</button>
-          <button id="year-down-btn" type="button">Year down</button>
-          <button id="best-rate-btn" type="button">Best rate</button>
-        </article>
+        <div class="searchbar-wrapper">
+          <article class="searchfield-article">
+            <input type="text" id="search-input" placeholder="Search..." />
+            <!-- <button id="search-btn" type="button">Search</button> -->
+          </article>
+          <article class="order-article">
+            <p>Sort by</p>
+            <div class="btn-wrapper">
+              <button id="year-up-btn" type="button">Year</button>
+              <button id="best-rate-btn" type="button">Rating</button>
+            </div>
+          </article>
+          <article class="result-count"><p></p></article>
+        </div>
       </section>
-      <section class="result-count"><p></p></section>
+      <!-- <section class="movie-not-found">Movie not found...</section> -->
       <section class="movie-db-section"></section>
     </main>
     <script type="module" src="./src/main.ts"></script>
