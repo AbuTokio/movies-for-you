@@ -1,7 +1,10 @@
+@font-face {
+  font-family: "Roboto";
+  src: url("../fonts/Roboto-VariableFont.ttf");
+}
+
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+  font-family: "Roboto";
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
@@ -9,8 +12,12 @@
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 a {
@@ -22,57 +29,70 @@ a:hover {
   color: #535bf2;
 }
 
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
 h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
   text-align: center;
+  font-size: 6.4em;
+  text-transform: uppercase;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vanilla:hover {
-  filter: drop-shadow(0 0 2em #3178c6aa);
+h1 span {
+  background-image: linear-gradient(to right, #535bf2, #646cff);
+  color: transparent;
+  background-clip: text;
 }
 
-.card {
-  padding: 2em;
+header {
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
 }
 
-.read-the-docs {
-  color: #888;
+.searchbar-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+}
+
+.searchfield-article,
+.order-article {
+  min-width: 10rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.searchfield-article {
+  gap: 0.8rem;
+}
+
+.order-article {
+  gap: 0.4rem;
 }
 
 button {
+  cursor: pointer;
+}
+
+input[type="text"]:focus {
+  outline: 1px solid #646cff;
+}
+
+button,
+input[type="text"] {
   border-radius: 8px;
   border: 1px solid transparent;
+  outline: 1px solid transparent;
   padding: 0.6em 1.2em;
-  font-size: 1em;
+  font-size: 1.5rem;
   font-weight: 500;
   font-family: inherit;
   background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
+  transition: all 0.25s;
 }
 button:hover {
   border-color: #646cff;
@@ -82,15 +102,34 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+#search-btn {
+  background-color: #646cff;
+}
+
+h2 {
+  text-align: center;
+}
+
+.movie-db-section {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.movie-db-section > div {
+  border: 1px solid #747bff;
+  border-radius: 16px;
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.movie-db-section > div div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }

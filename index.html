@@ -7,7 +7,25 @@
     <title>Movies for you</title>
   </head>
   <body>
-    <div id="app"></div>
+    <header>
+      <h1>Movies for <span>You</span></h1>
+      <p>The best MovieDB</p>
+    </header>
+    <main>
+      <section class="searchbar-section">
+        <article class="searchfield-article">
+          <input type="text" id="search-input" placeholder="Search..." />
+          <button id="search-btn" type="button">Search</button>
+        </article>
+        <article class="order-article">
+          <button id="year-up-btn" type="button">Year up</button>
+          <button id="year-down-btn" type="button">Year down</button>
+          <button id="best-rate-btn" type="button">Best rate</button>
+        </article>
+      </section>
+      <section class="result-count"><p></p></section>
+      <section class="movie-db-section"></section>
+    </main>
     <script type="module" src="./src/main.ts"></script>
   </body>
 </html>
