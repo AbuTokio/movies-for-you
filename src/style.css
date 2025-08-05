@@ -22,6 +22,9 @@
   --warning: oklch(0.5 0.05 100);
   --success: oklch(0.5 0.05 160);
   --info: oklch(0.5 0.05 260);
+  --shadow-light: oklch(0.6 0 250);
+  --shadow: oklch(0.4 0 250);
+  --shadow-dark: oklch(0.15 0 250);
 }
 
 .darkmode {
@@ -39,6 +42,9 @@
   --warning: oklch(0.7 0.05 100);
   --success: oklch(0.7 0.05 160);
   --info: oklch(0.7 0.05 260);
+  --shadow-light: oklch(0.4 0 250);
+  --shadow: oklch(0.5 0 250);
+  --shadow-dark: oklch(0.76 0 250);
 }
 
 * {
@@ -58,6 +64,7 @@ h1 {
   text-align: center;
   font-size: 6.4em;
   text-transform: uppercase;
+  position: relative;
 }
 
 h1 span {
@@ -66,13 +73,24 @@ h1 span {
   background-clip: text;
 }
 
-header {
+h1 span:last-of-type {
+  font-size: 1rem;
+  position: absolute;
+  right: -4.2rem;
+  bottom: 0.8rem;
+  transform: rotate(-45deg);
+}
+
+.title-wrapper {
   padding: 3rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  justify-self: center;
   gap: 1rem;
+  position: relative;
+  width: 60%;
 }
 
 main {
@@ -92,19 +110,38 @@ main {
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
+  width: 30%;
 }
 
-.searchfield-article,
-.order-article {
-  /* width: 100%; */
+.searchfield-article {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
+.order-article {
+  display: flex;
+  align-items: center;
+}
+
+.label-wrapper {
+  width: 15%;
+}
+
+.label-wrapper p {
+  font-size: 1.5rem;
+  font-weight: 500;
+  text-align: center;
+}
+
 .btn-wrapper {
   display: flex;
   gap: 0.8rem;
+  width: 85%;
+}
+
+.btn-wrapper button {
+  width: 50%;
 }
 
 .searchfield-article {
@@ -119,16 +156,7 @@ button {
   cursor: pointer;
 }
 
-input[type="text"] {
-  width: 100%;
-}
-
-input[type="text"]:focus {
-  border: 2px solid var(--secondary);
-}
-
-button,
-input[type="text"] {
+button {
   border-radius: 1rem;
   border: 2px solid var(--primary);
   outline: none;
@@ -146,8 +174,8 @@ button:hover {
 }
 button:focus,
 button:focus-visible {
-  background-color: var(--secondary);
-  border-color: var(--secondary);
+  background: linear-gradient(320deg, var(--secondary), var(--primary));
+  border-color: linear-gradient(320deg, var(--secondary), var(--primary));
   color: var(--bg-dark);
 }
 
@@ -167,32 +195,45 @@ h2 {
 .movie-db-section > div {
   padding: 1rem;
   border: 1px solid var(--border);
-  border-radius: 16px;
+  border-radius: 1rem;
   width: 500px;
   height: 500px;
-  /* display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-around; */
   background-color: var(--bg-light);
   position: relative;
+  box-shadow: var(--shadow-dark) 0px 2px 4px, var(--shadow) 0px 7px 13px -3px, var(--shadow-light) 0px -3px 0px inset;
+  transition: all 0.3s;
 }
 
 .movie-db-section > div:hover {
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px,
-    rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+  transform: scale(0.98);
+  border-radius: 1.25rem;
+  box-shadow: 0px 0px 30px 1px var(--primary);
 }
 
-.movie-db-section > div > div {
+.movie-db-section > div > div:first-of-type {
+  height: 25%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-top-left-radius: 1.25rem;
+  border-top-right-radius: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.movie-db-section > div > div:last-of-type {
   height: 75%;
   width: 100%;
   display: flex;
   flex-direction: column;
-  /* justify-content: center; */
-  gap: 1rem;
   position: absolute;
   top: 25%;
   left: 0;
+  border-bottom-left-radius: 1.25rem;
+  border-bottom-right-radius: 1.25rem;
+  background: linear-gradient(to bottom, var(--bg-light), var(--bg-dark));
 }
 
 .movie-db-section > div > div > div:first-of-type {
@@ -200,7 +241,7 @@ h2 {
 }
 
 .movie-db-section > div > div > div {
-  height: 4rem;
+  height: 20%;
   padding: 0 3rem;
   display: flex;
   align-items: center;
@@ -213,8 +254,15 @@ h2 {
   border-bottom: none;
 }
 
+.movie-db-section > div > div > div > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
 .movie-db-section > div > div > div > p {
-  width: 50%;
+  width: 30%;
   text-align: center;
 }
 
@@ -409,4 +457,180 @@ main {
     box-shadow: 5px -1px 0px #fff;
     filter: blur(0px);
   }
+}
+
+/* # SEARCH BUTTON */
+
+.search-panels {
+  --default-color: var(--primary);
+  --color-text: var(--text-muted);
+  --color-active: var(--primary);
+  --color-active-input: var(--primary);
+  --transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --width-input: 200px;
+  width: 100%;
+}
+
+.search-group {
+  position: relative;
+}
+
+.search-input {
+  width: var(--width-input);
+  border: solid 1.5px var(--default-color);
+  border-radius: 1rem;
+  background: none;
+  padding: 1rem;
+  padding-right: 3rem;
+  font-size: 1rem;
+  color: var(--color-active-input);
+  transition: border var(--transition);
+  width: 100%;
+}
+
+.enter-label {
+  font-size: 1.5rem;
+  font-weight: 500;
+  position: absolute;
+  left: 15px;
+  color: var(--color-text);
+  pointer-events: none;
+  transform: translateY(0.8rem);
+  transition: var(--transition);
+}
+
+.search-input:focus,
+input:valid {
+  outline: none;
+  border: 1.5px solid var(--color-active);
+}
+
+.search-input:focus ~ label,
+input:valid ~ label {
+  transform: translateY(-50%) scale(0.8);
+  background-color: var(--color-active);
+  border-radius: 20px;
+  padding: 0.2em 0.6em;
+  color: var(--color-text);
+}
+
+.btn-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: -1em;
+  right: 80%;
+  border-radius: 100%;
+  transition: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  transition-delay: 100ms;
+  opacity: 0;
+}
+
+.search-input:focus ~ .btn-box,
+input:valid ~ .btn-box {
+  right: 10%;
+  opacity: 1;
+  transition-delay: 0s;
+  transition: var(--transition);
+}
+
+.search-input:not(:focus) ~ .btn-box,
+input:not(:valid) ~ .btn-box {
+  transition-property: right, opacity;
+  transition-delay: 300ms;
+}
+
+.search-input:focus ~ .btn-box:hover,
+input:valid ~ .btn-box:hover {
+  transform: scale(1.2);
+}
+
+.search-input:focus ~ .btn-box:hover:active,
+input:valid ~ .btn-box:hover:active {
+  transform: scale(1);
+}
+
+.btn-search {
+  position: relative;
+  cursor: pointer;
+  background-color: var(--color-active);
+  width: 2em;
+  height: 2em;
+  top: 2.5px;
+  border: none;
+  border-radius: 100%;
+  padding: 0;
+  transition: var(--transition);
+}
+
+.btn-search:active {
+  transform: scale(1);
+}
+
+.btn-search svg {
+  position: absolute;
+  top: 25%;
+  left: 25%;
+  fill: var(--color-text);
+  width: 12px;
+  height: 12px;
+}
+
+#svg-circle {
+  fill: var(--color-text);
+  transition: var(--transition);
+}
+
+.search-input:focus ~ .btn-box:hover #svg-circle,
+input:valid ~ .btn-box:hover #svg-circle {
+  fill: transparent;
+}
+
+.btn-box-x {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0.2rem;
+  right: 0;
+  opacity: 0;
+  transform: rotate(-90deg) scale(0.1);
+  transition: var(--transition);
+}
+
+.search-input:focus ~ .btn-box-x,
+input:valid ~ .btn-box-x {
+  opacity: 1;
+  transform: rotate(0) scale(1);
+}
+
+.btn-clear {
+  position: relative;
+  cursor: pointer;
+  background-color: transparent;
+  width: 2em;
+  height: 2em;
+  border: none;
+  border-radius: 100%;
+  padding: 0;
+  transition: var(--transition);
+}
+
+.btn-clear:hover {
+  color: var(--primary);
+  background-color: transparent;
+}
+
+.btn-clear svg {
+  width: 15px;
+  height: 15px;
+}
+
+#clear-line {
+  fill: var(--default-color);
+}
+
+.btn-box-x:hover #clear-line {
+  fill: var(--color-active);
 }

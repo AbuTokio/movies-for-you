@@ -1,10 +1,10 @@
 import "./style.css"
 import { MOVIE, movies, SORT } from "./movies.ts"
 
-const searchInputElement = document.querySelector("#search-input") as HTMLInputElement
-// const searchButton = document.querySelector("#search-btn") as HTMLButtonElement
-const sortByYearButton = document.querySelector("#year-up-btn") as HTMLButtonElement
-const sortByRatingButton = document.querySelector("#best-rate-btn") as HTMLButtonElement
+const searchInputElement = document.querySelector(".search-input") as HTMLInputElement
+const searchCancelButtonElement = document.querySelector(".btn-clear")
+const sortByYearButton = document.querySelector("#sort-year-btn") as HTMLButtonElement
+const sortByRatingButton = document.querySelector("#sort-rating-btn") as HTMLButtonElement
 const resultCountElement = document.querySelector(".result-count p") as HTMLParagraphElement
 const movieDbElement = document.querySelector(".movie-db-section") as HTMLDivElement
 
@@ -13,7 +13,7 @@ function showMovies(data: typeof movies | undefined) {
     resultCountElement.textContent = "Found " + data.length + " results"
     data.forEach((movie) => {
       const movieContainer: HTMLDivElement = document.createElement("div")
-      const movieTitleElement: HTMLHeadingElement = document.createElement("h2")
+      const movieTitleElement: HTMLDivElement = document.createElement("div")
       const movieInformationElement: HTMLDivElement = document.createElement("div")
       const movieYearElement: HTMLDivElement = document.createElement("div")
       const movieDirectorElement: HTMLDivElement = document.createElement("div")
@@ -21,16 +21,13 @@ function showMovies(data: typeof movies | undefined) {
       const movieGenresElement: HTMLDivElement = document.createElement("div")
       const movieRatingElement: HTMLDivElement = document.createElement("div")
 
-      movieTitleElement.textContent = movie[MOVIE.TITLE]
+      movieTitleElement.innerHTML = `<h2>${movie[MOVIE.TITLE]}</h2>`
       movieYearElement.innerHTML = `<h3>📅 Year</h3> <p>${movie[MOVIE.YEAR]}</p>`
       movieDirectorElement.innerHTML = `<h3>🎬 Director</h3> <p>${movie[MOVIE.DIRECTOR]}</p>`
       movieDurationElement.innerHTML = `<h3>🕝 Duration</h3> <p>${movie[MOVIE.DURATION]}</p>`
       let genresString: string = ""
       movie[MOVIE.GENRES].forEach((genre) => {
         genresString += genre + ", "
-        // const movieGenreElement: HTMLParagraphElement = document.createElement("p")
-        // movieGenreElement.textContent = genre
-        // movieGenresElement.appendChild(movieGenreElement)
       })
       genresString = genresString.slice(0, genresString.length - 2)
       movieGenresElement.innerHTML = `<h3>📚 Genres</h3> <p>${genresString}</p>`
@@ -46,7 +43,6 @@ function showMovies(data: typeof movies | undefined) {
       movieContainer.appendChild(movieInformationElement)
 
       movieDbElement.appendChild(movieContainer)
-      // movieDbElement.classList.remove("movie-not-found")
     })
   } else {
     const notFoundContainer: HTMLDivElement = document.createElement("div")
@@ -56,7 +52,6 @@ function showMovies(data: typeof movies | undefined) {
     notFoundElement.textContent = "Movie not found..."
     notFoundContainer.appendChild(notFoundElement)
     movieDbElement.appendChild(notFoundContainer)
-    // movieDbElement.classList.add("movie-not-found")
   }
 }
 
@@ -133,21 +128,22 @@ function resetMovieDB() {
   }
 }
 
-searchInputElement.addEventListener("keyup", () => {
+searchInputElement.addEventListener("input", () => {
   resetMovieDB()
   showMovies(filteredMovieDB(searchInputElement.value))
   sortByRatingButton.textContent = "Rating"
   sortByYearButton.textContent = "Year"
 })
 
-// searchButton.addEventListener("click", () => {
-//   resetMovieDB()
-//   showMovies(filteredMovieDB(searchInputElement.value))
-// })
+searchCancelButtonElement?.addEventListener("click", () => {
+  searchInputElement.value = ""
+  resetMovieDB()
+  showMovies(movies)
+})
 
 let descendingOrder: boolean = false
 let activeButton: HTMLButtonElement | null = null
-// ↑↓
+
 sortByYearButton.addEventListener("click", () => {
   if (activeButton !== sortByYearButton) {
     descendingOrder = false
@@ -170,13 +166,6 @@ sortByYearButton.addEventListener("click", () => {
 
   descendingOrder = !descendingOrder
 })
-
-// yearDownButton.addEventListener("click", () => {
-//   resetMovieDB()
-//   searchInputElement.value
-//     ? showMovies(sortedMovieDB(SORT.BY_YEAR_DOWN, filteredMovieDB(searchInputElement.value)))
-//     : showMovies(sortedMovieDB(SORT.BY_YEAR_DOWN))
-// })
 
 sortByRatingButton.addEventListener("click", () => {
   if (activeButton !== sortByRatingButton) {

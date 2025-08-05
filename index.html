@@ -11,27 +11,42 @@
       <div class="theme-switch-wrapper">
         <input type="checkbox" class="theme-switch" />
       </div>
-      <h1><span>Movies</span> for You</h1>
-      <p>The best MovieDB</p>
-    </header>
-    <main>
+      <div class="title-wrapper">
+        <h1><span>Movies</span> for You <span>The best MovieDB</span></h1>
+      </div>
       <section class="searchbar-section">
         <div class="searchbar-wrapper">
           <article class="searchfield-article">
-            <input type="text" id="search-input" placeholder="Search..." />
-            <!-- <button id="search-btn" type="button">Search</button> -->
+            <div class="search-panels">
+              <div class="search-group">
+                <input required="" type="text" name="text" autocomplete="off" class="search-input" />
+                <label class="enter-label">Search</label>
+                <div class="btn-box-x">
+                  <button class="btn-clear">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 384 512">
+                      <path
+                        d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"
+                        id="clear-line"></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
           </article>
           <article class="order-article">
-            <p>Sort by</p>
+            <div class="label-wrapper">
+              <p>Sort by</p>
+            </div>
             <div class="btn-wrapper">
-              <button id="year-up-btn" type="button">Year</button>
-              <button id="best-rate-btn" type="button">Rating</button>
+              <button id="sort-year-btn" type="button">Year</button>
+              <button id="sort-rating-btn" type="button">Rating</button>
             </div>
           </article>
           <article class="result-count"><p></p></article>
         </div>
       </section>
-      <!-- <section class="movie-not-found">Movie not found...</section> -->
+    </header>
+    <main>
       <section class="movie-db-section"></section>
     </main>
     <script type="module" src="./src/main.ts"></script>
