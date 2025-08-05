@@ -4,7 +4,6 @@ import { MOVIE, movies, SORT } from "./movies.ts"
 const searchInputElement = document.querySelector("#search-input") as HTMLInputElement
 // const searchButton = document.querySelector("#search-btn") as HTMLButtonElement
 const sortByYearButton = document.querySelector("#year-up-btn") as HTMLButtonElement
-const yearDownButton = document.querySelector("#year-down-btn") as HTMLButtonElement
 const sortByRatingButton = document.querySelector("#best-rate-btn") as HTMLButtonElement
 const resultCountElement = document.querySelector(".result-count p") as HTMLParagraphElement
 const movieDbElement = document.querySelector(".movie-db-section") as HTMLDivElement
@@ -15,29 +14,36 @@ function showMovies(data: typeof movies | undefined) {
     data.forEach((movie) => {
       const movieContainer: HTMLDivElement = document.createElement("div")
       const movieTitleElement: HTMLHeadingElement = document.createElement("h2")
-      const movieYearElement: HTMLParagraphElement = document.createElement("p")
-      const movieDirectorElement: HTMLHeadingElement = document.createElement("h3")
-      const movieDurationElement: HTMLParagraphElement = document.createElement("p")
+      const movieInformationElement: HTMLDivElement = document.createElement("div")
+      const movieYearElement: HTMLDivElement = document.createElement("div")
+      const movieDirectorElement: HTMLDivElement = document.createElement("div")
+      const movieDurationElement: HTMLDivElement = document.createElement("div")
       const movieGenresElement: HTMLDivElement = document.createElement("div")
-      const movieRatingElement: HTMLParagraphElement = document.createElement("p")
+      const movieRatingElement: HTMLDivElement = document.createElement("div")
 
       movieTitleElement.textContent = movie[MOVIE.TITLE]
-      movieYearElement.textContent = movie[MOVIE.YEAR]
-      movieDirectorElement.textContent = movie[MOVIE.DIRECTOR]
-      movieDurationElement.textContent = movie[MOVIE.DURATION]
+      movieYearElement.innerHTML = `<h3>📅 Year</h3> <p>${movie[MOVIE.YEAR]}</p>`
+      movieDirectorElement.innerHTML = `<h3>🎬 Director</h3> <p>${movie[MOVIE.DIRECTOR]}</p>`
+      movieDurationElement.innerHTML = `<h3>🕝 Duration</h3> <p>${movie[MOVIE.DURATION]}</p>`
+      let genresString: string = ""
       movie[MOVIE.GENRES].forEach((genre) => {
-        const movieGenreElement: HTMLParagraphElement = document.createElement("p")
-        movieGenreElement.textContent = genre
-        movieGenresElement.appendChild(movieGenreElement)
+        genresString += genre + ", "
+        // const movieGenreElement: HTMLParagraphElement = document.createElement("p")
+        // movieGenreElement.textContent = genre
+        // movieGenresElement.appendChild(movieGenreElement)
       })
-      movieRatingElement.textContent = "⭐ " + movie[MOVIE.RATING]
+      genresString = genresString.slice(0, genresString.length - 2)
+      movieGenresElement.innerHTML = `<h3>📚 Genres</h3> <p>${genresString}</p>`
+      movieRatingElement.innerHTML = `<h3>⭐ Rating</h3> <p>${movie[MOVIE.RATING]}</p>`
 
       movieContainer.appendChild(movieTitleElement)
-      movieContainer.appendChild(movieYearElement)
-      movieContainer.appendChild(movieDirectorElement)
-      movieContainer.appendChild(movieDurationElement)
-      movieContainer.appendChild(movieGenresElement)
-      movieContainer.appendChild(movieRatingElement)
+
+      movieInformationElement.appendChild(movieYearElement)
+      movieInformationElement.appendChild(movieDirectorElement)
+      movieInformationElement.appendChild(movieDurationElement)
+      movieInformationElement.appendChild(movieGenresElement)
+      movieInformationElement.appendChild(movieRatingElement)
+      movieContainer.appendChild(movieInformationElement)
 
       movieDbElement.appendChild(movieContainer)
       // movieDbElement.classList.remove("movie-not-found")

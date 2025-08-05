@@ -152,6 +152,7 @@ button:focus-visible {
 }
 
 h2 {
+  font-size: 2rem;
   text-align: center;
 }
 
@@ -164,15 +165,17 @@ h2 {
 }
 
 .movie-db-section > div {
+  padding: 1rem;
   border: 1px solid var(--border);
   border-radius: 16px;
-  width: 400px;
-  height: 400px;
-  display: flex;
+  width: 500px;
+  height: 500px;
+  /* display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-around; */
   background-color: var(--bg-light);
+  position: relative;
 }
 
 .movie-db-section > div:hover {
@@ -180,11 +183,39 @@ h2 {
     rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
 }
 
-.movie-db-section > div div {
+.movie-db-section > div > div {
+  height: 75%;
+  width: 100%;
   display: flex;
   flex-direction: column;
+  /* justify-content: center; */
+  gap: 1rem;
+  position: absolute;
+  top: 25%;
+  left: 0;
+}
+
+.movie-db-section > div > div > div:first-of-type {
+  border-top: 1px solid var(--border-muted);
+}
+
+.movie-db-section > div > div > div {
+  height: 4rem;
+  padding: 0 3rem;
+  display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  gap: 2rem;
+  border-bottom: 1px solid var(--border-muted);
+}
+
+.movie-db-section > div > div > div:last-of-type {
+  border-bottom: none;
+}
+
+.movie-db-section > div > div > div > p {
+  width: 50%;
+  text-align: center;
 }
 
 main {
