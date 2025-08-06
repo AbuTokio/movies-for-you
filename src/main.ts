@@ -1,14 +1,24 @@
 import "./style.css"
 import { MOVIE, movies, SORT } from "./movies.ts"
 
+// # VARIABLES
+
+// ~ HTML ELEMENTS
+const themeSwitch = document.querySelector(".theme-switch") as HTMLInputElement
 const searchInputElement = document.querySelector(".search-input") as HTMLInputElement
-const searchCancelButtonElement = document.querySelector(".btn-clear")
+const searchCancelButtonElement = document.querySelector(".btn-clear") as HTMLButtonElement
 const sortByYearButton = document.querySelector("#sort-year-btn") as HTMLButtonElement
 const sortByRatingButton = document.querySelector("#sort-rating-btn") as HTMLButtonElement
 const resultCountElement = document.querySelector(".result-count p") as HTMLParagraphElement
 const movieDbElement = document.querySelector(".movie-db-section") as HTMLDivElement
 
-function showMovies(data: typeof movies | undefined) {
+// ~ SORTING VARIABLES
+let activeButton: HTMLButtonElement
+let descendingOrder: boolean = false
+
+// # FUNCTIONS
+
+function showMovies(data: typeof movies | undefined): void {
   if (data) {
     resultCountElement.textContent = "Found " + data.length + " results"
     data.forEach((movie) => {
@@ -55,8 +65,6 @@ function showMovies(data: typeof movies | undefined) {
   }
 }
 
-showMovies(movies)
-
 function filteredMovieDB(str: string): typeof movies | undefined {
   const moviesFilteredByTitle: typeof movies = movies.filter(
     (movie: [string, string, string, string, string[], string]) =>
@@ -82,7 +90,7 @@ function filteredMovieDB(str: string): typeof movies | undefined {
   }
 }
 
-function sortedMovieDB(sortingCondition: SORT, filteredData?: typeof movies) {
+function sortedMovieDB(sortingCondition: SORT, filteredData?: typeof movies): typeof movies | undefined {
   const sortedData: typeof movies = filteredData ? [...filteredData] : [...movies]
   switch (sortingCondition) {
     case SORT.BY_YEAR_UP:
@@ -120,13 +128,19 @@ function sortedMovieDB(sortingCondition: SORT, filteredData?: typeof movies) {
   }
 }
 
-function resetMovieDB() {
+function resetMovieDB(): void {
   if (movieDbElement) {
     while (movieDbElement.firstChild) {
       movieDbElement.removeChild(movieDbElement.firstChild)
     }
   }
 }
+
+// # EVENT LISTENER
+
+themeSwitch.addEventListener("change", () => {
+  document.body.classList.toggle("darkmode")
+})
 
 searchInputElement.addEventListener("input", () => {
   resetMovieDB()
@@ -140,9 +154,6 @@ searchCancelButtonElement?.addEventListener("click", () => {
   resetMovieDB()
   showMovies(movies)
 })
-
-let descendingOrder: boolean = false
-let activeButton: HTMLButtonElement | null = null
 
 sortByYearButton.addEventListener("click", () => {
   if (activeButton !== sortByYearButton) {
@@ -188,8 +199,4 @@ sortByRatingButton.addEventListener("click", () => {
   descendingOrder = !descendingOrder
 })
 
-const themeSwitch = document.querySelector(".theme-switch") as HTMLInputElement
-themeSwitch.addEventListener("change", () => {
-  document.body.classList.toggle("darkmode")
-  document.body.classList.toggle("lightmode")
-})
+showMovies(movies)
