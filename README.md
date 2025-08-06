@@ -1,6 +1,7 @@
 # SuperCode - Movies for You
 
-![Header/intro section for the Huddle landing page with single column layout](./readme/screencapture.png)
+![screencapture-dark](./readme/screencapture-dark.png)
+![screencapture-light](./readme/screencapture-light.png)
 
 ## Welcome! 👋
 
