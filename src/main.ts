@@ -16,6 +16,9 @@ const movieDbElement = document.querySelector(".movie-db-section") as HTMLDivEle
 let activeButton: HTMLButtonElement
 let descendingOrder: boolean = false
 
+// ~ SYSTEM VARIABLES
+const prefersDarkmode = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
+
 // # FUNCTIONS
 
 function showMovies(data: typeof movies | undefined): void {
@@ -140,6 +143,7 @@ function resetMovieDB(): void {
 
 themeSwitch.addEventListener("change", () => {
   document.body.classList.toggle("darkmode")
+  console.log(themeSwitch.checked)
 })
 
 searchInputElement.addEventListener("input", () => {
@@ -198,5 +202,9 @@ sortByRatingButton.addEventListener("click", () => {
   }
   descendingOrder = !descendingOrder
 })
+
+// # PAGE LOAD
+
+prefersDarkmode ? document.body.classList.toggle("darkmode") : (themeSwitch.checked = true)
 
 showMovies(movies)
