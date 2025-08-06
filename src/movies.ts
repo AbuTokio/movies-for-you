@@ -202,19 +202,3 @@ export const movies: [string, string, string, string, string[], string][] = [
   ["Heat", "1995", "Michael Mann", "2h 50min", ["Action", "Crime", "Drama", "Thriller"], "8.2"],
   ["The Third Man", "1949", "Carol Reed", "1h 44min", ["Film-Noir", "Mystery", "Thriller"], "8.3"],
 ]
-
-export enum MOVIE {
-  TITLE,
-  YEAR,
-  DIRECTOR,
-  DURATION,
-  GENRES,
-  RATING,
-}
-
-export enum SORT {
-  BY_YEAR_UP,
-  BY_YEAR_DOWN,
-  BY_RATING_UP,
-  BY_RATING_DOWN,
-}

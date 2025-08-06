@@ -1,0 +1,8 @@
+export enum MOVIE {
+  TITLE,
+  YEAR,
+  DIRECTOR,
+  DURATION,
+  GENRES,
+  RATING,
+}

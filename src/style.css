@@ -81,8 +81,14 @@ button:hover {
   background-color: var(--primary);
   color: var(--bg-dark);
 }
-button:focus,
+/* button:focus,
 button:focus-visible {
+  background: linear-gradient(320deg, var(--secondary), var(--primary));
+  border-color: linear-gradient(320deg, var(--secondary), var(--primary));
+  color: var(--bg-dark);
+} */
+
+.active-btn {
   background: linear-gradient(320deg, var(--secondary), var(--primary));
   border-color: linear-gradient(320deg, var(--secondary), var(--primary));
   color: var(--bg-dark);
@@ -135,7 +141,7 @@ h1 span:last-of-type {
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
-  width: 30%;
+  width: 65%;
 }
 
 .searchfield-article {
@@ -145,10 +151,21 @@ h1 span:last-of-type {
   gap: 0.8rem;
 }
 
+.filter-wrapper {
+  display: flex;
+  /* flex-direction: column; */
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
 .order-article {
   display: flex;
   align-items: center;
   gap: 0.4rem;
+  width: 50%;
+  transform: translateX(50%);
 }
 
 .label-wrapper {
@@ -463,10 +480,17 @@ h2 {
   --transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
   --width-input: 200px;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  justify-content: space-between;
 }
 
 .search-group {
   position: relative;
+  transform: translateX(50%);
+  width: 50%;
+  justify-self: center;
 }
 
 .search-input {
@@ -486,10 +510,10 @@ h2 {
   font-size: 1.5rem;
   font-weight: 500;
   position: absolute;
-  left: 15px;
+  left: 1rem;
   color: var(--color-text);
   pointer-events: none;
-  transform: translateY(0.8rem);
+  transform: translateY(0.7rem);
   transition: var(--transition);
 }
 
@@ -501,7 +525,7 @@ input:valid {
 
 .search-input:focus ~ label,
 input:valid ~ label {
-  transform: translateY(-50%) scale(0.8);
+  transform: translate(-10%, -50%) scale(0.8);
   background-color: var(--color-active);
   border-radius: 20px;
   padding: 0.2em 0.6em;

@@ -1,11 +1,15 @@
 import "./style.css"
-import { MOVIE, movies, SORT } from "./movies.ts"
+import { movies } from "./movies.ts"
+import { SORT } from "./enums/Sort.ts"
+import { MOVIE } from "./enums/Movie.ts"
 
 // # VARIABLES
 
 // ~ HTML ELEMENTS
 const themeSwitch = document.querySelector(".theme-switch") as HTMLInputElement
 const searchInputElement = document.querySelector(".search-input") as HTMLInputElement
+const searchPanelsElement = document.querySelector(".search-panels") as HTMLDivElement
+const filterWrapperElement = document.querySelector(".filter-wrapper") as HTMLDivElement
 const searchCancelButtonElement = document.querySelector(".btn-clear") as HTMLButtonElement
 const sortByYearButton = document.querySelector("#sort-year-btn") as HTMLButtonElement
 const sortByRatingButton = document.querySelector("#sort-rating-btn") as HTMLButtonElement
@@ -13,8 +17,12 @@ const resultCountElement = document.querySelector(".result-count p") as HTMLPara
 const movieDbElement = document.querySelector(".movie-db-section") as HTMLDivElement
 
 // ~ SORTING VARIABLES
-let activeButton: HTMLButtonElement
+let activeButton: HTMLButtonElement | null
 let descendingOrder: boolean = false
+
+// ~ DB VARIABLES
+let allGenres = new Set<string>()
+let genres = new Set<string>()
 
 // ~ SYSTEM VARIABLES
 const prefersDarkmode = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
@@ -22,7 +30,7 @@ const prefersDarkmode = window.matchMedia && window.matchMedia("(prefers-color-s
 // # FUNCTIONS
 
 function showMovies(data: typeof movies | undefined): void {
-  if (data) {
+  if (data && data.length > 0) {
     resultCountElement.textContent = "Found " + data.length + " results"
     data.forEach((movie) => {
       const movieContainer: HTMLDivElement = document.createElement("div")
@@ -58,13 +66,86 @@ function showMovies(data: typeof movies | undefined): void {
       movieDbElement.appendChild(movieContainer)
     })
   } else {
-    const notFoundContainer: HTMLDivElement = document.createElement("div")
-    const notFoundElement: HTMLHeadingElement = document.createElement("h2")
+    movieNotFound()
+  }
+  getGenresFromMovieDB(data)
+  addGenreButtons(allGenres)
+}
 
-    resultCountElement.textContent = "Found 0 results"
-    notFoundElement.textContent = "Movie not found..."
-    notFoundContainer.appendChild(notFoundElement)
-    movieDbElement.appendChild(notFoundContainer)
+function getGenresFromMovieDB(data: typeof movies | undefined): void {
+  genres.clear()
+
+  let genresArray: string[] = []
+
+  if (data) {
+    data.forEach((movie) => {
+      movie[MOVIE.GENRES].forEach((genre) => {
+        genresArray.push(genre)
+      })
+    })
+
+    genresArray.sort().forEach((genre) => {
+      genres.add(genre)
+    })
+  }
+}
+
+function getAllGenresFromMovieDB(): void {
+  allGenres.clear()
+
+  let genresArray: string[] = []
+
+  if (movies) {
+    movies.forEach((movie) => {
+      movie[MOVIE.GENRES].forEach((genre) => {
+        genresArray.push(genre)
+      })
+    })
+
+    genresArray.sort().forEach((genre) => {
+      allGenres.add(genre)
+    })
+  }
+}
+
+function addGenreButtons(data: Set<string>) {
+  while (filterWrapperElement.firstChild) {
+    filterWrapperElement.removeChild(filterWrapperElement.firstChild)
+  }
+
+  if (data.size > 0) {
+    data.forEach((genre) => {
+      const genreButton: HTMLButtonElement = document.createElement("button")
+      genreButton.textContent = genre
+      genreButton.classList.add("genre-btn")
+      filterWrapperElement.appendChild(genreButton)
+
+      genreButton.addEventListener("click", () => {
+        resetSortButtons()
+        resetMovieDB()
+        searchInputElement.value
+          ? showMovies(
+              filteredMovieDB(searchInputElement.value)?.filter((movie) => movie[MOVIE.GENRES].includes(genre))
+            )
+          : showMovies(movies.filter((movie) => movie[MOVIE.GENRES].includes(genre)))
+
+        const genreButtons: NodeListOf<HTMLButtonElement> = document.querySelectorAll(".genre-btn")
+        genreButtons.forEach((button) => {
+          if (button.textContent === genre) {
+            button.classList.add("active-btn")
+            button.addEventListener("click", () => {
+              resetMovieDB()
+              searchInputElement.value ? showMovies(filteredMovieDB(searchInputElement.value)) : showMovies(movies)
+            })
+          }
+        })
+      })
+    })
+
+    searchPanelsElement.appendChild(filterWrapperElement)
+    filterWrapperElement.style.display = "flex"
+  } else {
+    filterWrapperElement.style.display = "none"
   }
 }
 
@@ -93,7 +174,7 @@ function filteredMovieDB(str: string): typeof movies | undefined {
   }
 }
 
-function sortedMovieDB(sortingCondition: SORT, filteredData?: typeof movies): typeof movies | undefined {
+function sortedMovieDB(sortingCondition: SORT, filteredData?: typeof movies): typeof movies {
   const sortedData: typeof movies = filteredData ? [...filteredData] : [...movies]
   switch (sortingCondition) {
     case SORT.BY_YEAR_UP:
@@ -139,6 +220,25 @@ function resetMovieDB(): void {
   }
 }
 
+function resetSortButtons(): void {
+  descendingOrder = false
+  activeButton = null
+  sortByYearButton.textContent = "Year"
+  sortByYearButton.classList.remove("active-btn")
+  sortByRatingButton.textContent = "Rating"
+  sortByRatingButton.classList.remove("active-btn")
+}
+
+function movieNotFound(): void {
+  const notFoundContainer: HTMLDivElement = document.createElement("div")
+  const notFoundElement: HTMLHeadingElement = document.createElement("h2")
+
+  resultCountElement.textContent = "Found 0 results"
+  notFoundElement.textContent = "Movie not found..."
+  notFoundContainer.appendChild(notFoundElement)
+  movieDbElement.appendChild(notFoundContainer)
+}
+
 // # EVENT LISTENER
 
 themeSwitch.addEventListener("change", () => {
@@ -154,19 +254,21 @@ searchInputElement.addEventListener("input", () => {
 })
 
 searchCancelButtonElement?.addEventListener("click", () => {
+  // fix: Button does not react sometimes
   searchInputElement.value = ""
   resetMovieDB()
+  resetSortButtons()
   showMovies(movies)
 })
 
 sortByYearButton.addEventListener("click", () => {
   if (activeButton !== sortByYearButton) {
-    descendingOrder = false
+    resetSortButtons()
     activeButton = sortByYearButton
-    sortByRatingButton.textContent = "Rating"
   }
 
   resetMovieDB()
+
   if (descendingOrder) {
     searchInputElement.value
       ? showMovies(sortedMovieDB(SORT.BY_YEAR_DOWN, filteredMovieDB(searchInputElement.value)))
@@ -179,16 +281,18 @@ sortByYearButton.addEventListener("click", () => {
     sortByYearButton.textContent = "Year ↑"
   }
 
+  sortByYearButton.classList.add("active-btn")
   descendingOrder = !descendingOrder
 })
 
 sortByRatingButton.addEventListener("click", () => {
   if (activeButton !== sortByRatingButton) {
-    descendingOrder = false
+    resetSortButtons()
     activeButton = sortByRatingButton
-    sortByYearButton.textContent = "Year"
   }
+
   resetMovieDB()
+
   if (descendingOrder) {
     searchInputElement.value
       ? showMovies(sortedMovieDB(SORT.BY_RATING_DOWN, filteredMovieDB(searchInputElement.value)))
@@ -200,11 +304,13 @@ sortByRatingButton.addEventListener("click", () => {
       : showMovies(sortedMovieDB(SORT.BY_RATING_UP))
     sortByRatingButton.textContent = "Rating ↑"
   }
+
+  sortByRatingButton.classList.add("active-btn")
   descendingOrder = !descendingOrder
 })
 
 // # PAGE LOAD
 
 prefersDarkmode ? document.body.classList.toggle("darkmode") : (themeSwitch.checked = true)
-
+getAllGenresFromMovieDB()
 showMovies(movies)
